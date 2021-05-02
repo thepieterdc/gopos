@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/bradfitz/latlong"
+	postal "github.com/openvenues/gopostal/parser"
 	"log"
 	"net/http"
 	"strconv"
@@ -49,6 +50,28 @@ func jsonResponse(w http.ResponseWriter, statusCode int, body interface{}) {
 }
 
 /**
+ * Handles the /format route.
+ */
+func formatHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract the query string arguments.
+	queryString := r.URL.Query()
+	input := queryString.Get("input")
+	if len(input) == 0 {
+		invalidArgument(w, "input")
+		return
+	}
+
+	// Format the address.
+	response := make(map[string]interface{})
+	for _, entry := range postal.ParseAddress(input) {
+		response[entry.Label] = entry.Value
+	}
+
+	// Send the response.
+	jsonResponse(w, http.StatusOK, response)
+}
+
+/**
  * Handles the /timezone route.
  */
 func timezoneHandler(w http.ResponseWriter, r *http.Request) {
@@ -78,6 +101,9 @@ func timezoneHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// Register the address formatting route.
+	http.HandleFunc("/format", formatHandler)
+
 	// Register the timezone route.
 	http.HandleFunc("/timezone", timezoneHandler)
 

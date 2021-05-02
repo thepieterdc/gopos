@@ -4,6 +4,8 @@ github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF0
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/jonas-p/go-shp v0.1.1 h1:LY81nN67DBCz6VNFn2kS64CjmnDo9IP8rmSkTvhO9jE=
 github.com/jonas-p/go-shp v0.1.1/go.mod h1:MRIhyxDQ6VVp0oYeD7yPGr5RSTNScUFKCDsI5DR7PtI=
+github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d h1:KJ+N55d9zLN8fTg3NchLdmmAmPieXC5E6UNJ8zFFttU=
+github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d/go.mod h1:Ycrd7XnwQdumHzpB/6WEa85B4WNdbLC6Wz4FAQNkaV0=
 golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb h1:fqpd0EBDzlHRCjiphRR5Zo/RSWWQlWv34418dnEixWk=
 golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
