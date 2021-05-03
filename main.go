@@ -201,15 +201,14 @@ func googlePlaceHandler(w http.ResponseWriter, r *http.Request, params httproute
 			return
 		}
 
+		// Send the response.
+		jsonResponse(w, http.StatusOK, parsedResponse.Result)
+
 		// Save the response in the database.
 		_, err = collection.InsertOne(r.Context(), parsedResponse.Result)
 		if err != nil {
-			internalError(w, fmt.Sprintf("%v", err))
-			return
+			log.Println(fmt.Errorf(fmt.Sprintf("%v", err)))
 		}
-
-		// Send the response.
-		jsonResponse(w, http.StatusOK, parsedResponse.Result)
 	} else {
 		internalError(w, fmt.Sprintf("status code is %d.", response.StatusCode))
 	}
