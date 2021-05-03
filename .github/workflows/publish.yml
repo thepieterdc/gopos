@@ -1,0 +1,20 @@
+name: Publish the Docker image
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to the container registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+#      - name: Download the latest image for caching
+#        run: docker pull ghcr.io/thepieterdc/gopos:latest
+      - name: Build the new image
+        run: docker build . -t ghcr.io/thepieterdc/gopos:latest --cache-from ghcr.io/thepieterdc/gopos:latest
+      - name: Push the new image
+        run: docker push ghcr.io/thepieterdc/gopos:latest

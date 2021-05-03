@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  gopos:
+    hostname: gopos.local
+    build: .
+    ports:
+      - "8000"
+    depends_on:
+      - mongodb
+    environment:
+      - GOOGLE_API_KEY=google.key.goes.here
+      - MONGO_URI=mongodb://goposUser:goposPass@mongodb:27017/gopos?authSource=admin&maxPoolSize=2&readPreference=secondaryPreferred&maxStalenessSeconds=120
+
+  mongodb:
+    image: "mongo:4.4"
+    hostname: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=goposUser
+      - MONGO_INITDB_ROOT_PASSWORD=goposPass
+
+volumes:
+  mongodb_data:
