@@ -1,10 +1,20 @@
 # gopos
 
+[![Publish the Docker image](https://github.com/thepieterdc/gopos/actions/workflows/publish.yml/badge.svg)](https://github.com/thepieterdc/gopos/actions/workflows/publish.yml)
+
 _From Ancient Greek τόπος (tópos, “place”)._
 
 Address and place information service in Go.
 
 ---
+
+## Running via docker compose
+```shell
+docker-compose up --build
+```
+
+## Dependencies
+This module requires [libpostal](https://github.com/openvenues/libpostal) for address resolving.
 
 ## Configuration
 
@@ -16,8 +26,6 @@ The following environment variables are required:
 ## Features
 
 ### Format a given address.
-
-_This route depends on [libpostal](https://github.com/openvenues/libpostal)._
 
 **Example request:**
 
