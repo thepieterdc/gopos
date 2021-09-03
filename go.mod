@@ -8,6 +8,6 @@ require (
 	github.com/jonas-p/go-shp v0.1.1 // indirect
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
-	go.mongodb.org/mongo-driver v1.7.1
+	go.mongodb.org/mongo-driver v1.7.2
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb // indirect
 )
