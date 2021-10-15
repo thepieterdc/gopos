@@ -160,3 +160,6 @@ GET /timezone?latitude=37.97153995920827&longitude=23.726713776643596
   "timezone": "Europe/Athens"
 }
 ```
+
+## Releasing
+This process is automated via GitHub Actions. In order to make a new release, trigger the `Release` workflow.
