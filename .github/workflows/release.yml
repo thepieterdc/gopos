@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version number
+        required: true
+
+jobs:
+  publish:
+    name: Publish image to Docker registry
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to the container registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+      - name: Download the latest snapshot image for caching
+        run: docker pull ghcr.io/thepieterdc/gopos:latest-snapshot
+      - name: Build the new image
+        run: docker build . -t ghcr.io/thepieterdc/gopos:latest -t ghcr.io/thepieterdc/gopos:${{ github.event.inputs.version }} --cache-from ghcr.io/thepieterdc/gopos:latest-snapshot
+      - name: Push the new image
+        run: docker push -a ghcr.io/thepieterdc/gopos
+
+  release:
+    name: Create the release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.event.inputs.version }}
+          tag_name: ${{ github.event.inputs.version }}
