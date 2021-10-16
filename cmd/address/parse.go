@@ -19,8 +19,14 @@ func ParseHandler(ctx echo.Context) error {
 		return err
 	}
 
+	// Build the options.
+	options := postal.ParserOptions{Country: "", Language: ""}
+	if len(input.Country) > 0 {
+		options.Country = input.Country
+	}
+
 	// Parse the input address.
-	parsed := postal.ParseAddress(input.Query)
+	parsed := postal.ParseAddressOptions(input.Query, options)
 
 	// Build the response.
 	response := make(map[string]interface{})

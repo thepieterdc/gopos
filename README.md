@@ -19,12 +19,20 @@ This module requires [libpostal](https://github.com/openvenues/libpostal) for ad
 ## Features
 
 ### Parse an input string into a formatted address.
+If the country of the address is known, it is recommended to pass this along in the request to improve the formatting process (see the second example).
+
 This route depends on `libpostal`.
 
 **Example request:**
 
 ```http request
-GET /address/parse?input=Apple%2010955%20N%20Tantau%20Ave,%20Cupertino,%20CA%2095014,United%20States
+GET /address/parse?query=Apple%2010955%20N%20Tantau%20Ave,%20Cupertino,%20CA%2095014,United%20States
+```
+
+**Example request (explicitly providing the country):**
+
+```http request
+GET /address/parse?country=fr&query=Champ%20de%20Mars%2C%205%20Av.%20Anatole%20France%2C%2075007%20Paris
 ```
 
 **Response:**
