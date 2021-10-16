@@ -1,6 +1,6 @@
 # gopos
 
-[![Publish the Docker image](https://github.com/thepieterdc/gopos/actions/workflows/publish.yml/badge.svg)](https://github.com/thepieterdc/gopos/actions/workflows/publish.yml)
+[![Release](https://github.com/thepieterdc/gopos/actions/workflows/release.yml/badge.svg)](https://github.com/thepieterdc/gopos/actions/workflows/release.yml)
 
 _From Ancient Greek τόπος (tópos, “place”)._
 
