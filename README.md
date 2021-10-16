@@ -16,21 +16,15 @@ docker-compose up --build
 ## Dependencies
 This module requires [libpostal](https://github.com/openvenues/libpostal) for address resolving.
 
-## Configuration
-
-The following environment variables are required:
-
-- **GOOGLE_API_KEY:** API key for Google Places.
-- **MONGO_URI:** MongoDB connection string. This is used to cache Google Place calls to save costs.
-
 ## Features
 
-### Format a given address.
+### Parse an input string into a formatted address
+This route depends on `libpostal`.
 
 **Example request:**
 
 ```http request
-GET /format?input=Apple%2010955%20N%20Tantau%20Ave,%20Cupertino,%20CA%2095014,United%20States
+GET /address/parse?input=Apple%2010955%20N%20Tantau%20Ave,%20Cupertino,%20CA%2095014,United%20States
 ```
 
 **Response:**
@@ -49,8 +43,12 @@ GET /format?input=Apple%2010955%20N%20Tantau%20Ave,%20Cupertino,%20CA%2095014,Un
 
 ### Lookup a Google Place ID.
 
-The result of each call is written to a database to prevent sending (and therefore paying for) the same request to
-Google twice.
+The result of each call can be cached to a database to avoid costs when sending repeated requests.
+
+**Environment variables:**
+The following environment variables are supported:
+- _(Required)_ **GOOGLE_API_KEY:** API key for Google Places.
+- **MONGO_URI:** MongoDB connection string.
 
 **Example request:**
 
@@ -143,7 +141,7 @@ GET /google/place/ChIJ37HL3ry3t4kRv3YLbdhpWXE
 }
 ```
 
-### Given a coordinate pair, find the timezone.
+### Find the timezone.
 
 **Example request:**
 
