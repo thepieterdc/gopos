@@ -31,6 +31,7 @@ func main() {
 	// Build the webserver and register all the routes.
 	srv := echo.New()
 	cmd.RegisterAddressRoutes(srv)
+	srv.GET("/health", cmd.HealthHandler)
 	cmd.RegisterGoogleRoutes(srv)
 	srv.GET("/timezone", cmd.TimezoneHandler)
 
