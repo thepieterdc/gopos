@@ -2,9 +2,9 @@ package address
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/openvenues/gopostal/parser"
+	postal "github.com/openvenues/gopostal/parser"
 	"github.com/thepieterdc/gopos/pkg/address/parse"
-	"github.com/thepieterdc/gopos/pkg/request"
+	"github.com/thepieterdc/gopos/pkg/web"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ import (
 func ParseHandler(ctx echo.Context) error {
 	// Parse the arguments.
 	input := new(parse.RequestQuery)
-	if err := request.ParseAndValidate(&ctx, input); err != nil {
+	if err := web.ParseAndValidate(&ctx, input); err != nil {
 		return err
 	}
 
