@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/bradfitz/latlong"
 	"github.com/labstack/echo/v4"
-	"github.com/thepieterdc/gopos/pkg/request"
 	"github.com/thepieterdc/gopos/pkg/timezone"
+	"github.com/thepieterdc/gopos/pkg/web"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ import (
 func TimezoneHandler(ctx echo.Context) error {
 	// Parse the arguments.
 	input := new(timezone.RequestQuery)
-	if err := request.ParseAndValidate(&ctx, input); err != nil {
+	if err := web.ParseAndValidate(&ctx, input); err != nil {
 		return err
 	}
 

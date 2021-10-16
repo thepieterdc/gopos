@@ -1,10 +1,4 @@
-package src
-
-// Base Google API url.
-const GoogleApiUrl = "https://maps.googleapis.com/maps/api/place/details/json?key=%s&place_id=%s&fields=address_component,adr_address,business_status,formatted_address,geometry,icon,name,photo,place_id,plus_code,type,url,utc_offset,vicinity"
-
-// Google Place database collection.
-const GooglePlaceIdCollection = "google_place_ids"
+package google
 
 // GoogleAddressComponent address parts
 type GoogleAddressComponent struct {
