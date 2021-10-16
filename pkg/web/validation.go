@@ -1,8 +1,11 @@
 package web
 
 import (
+	"fmt"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
+	"net/http"
+	"strings"
 )
 
 // Validator default request validator
@@ -13,6 +16,19 @@ type Validator struct {
 func (v Validator) Validate(i interface{}) error {
 	// Validate the input struct.
 	if err := v.Validator.Struct(i); err != nil {
+		// Convert the error to a validation error.
+		validationError := err.(validator.ValidationErrors)[0]
+
+		// Handle missing fields.
+		if validationError.Tag() == "required" {
+			field := strings.ToLower(validationError.Field())
+			return echo.NewHTTPError(
+				http.StatusUnprocessableEntity,
+				fmt.Sprintf("required field \"%s\" was not found.", field),
+			)
+		}
+
+		// Default error handler.
 		return err
 	}
 
@@ -24,7 +40,12 @@ func (v Validator) Validate(i interface{}) error {
 func ParseAndValidate(ctx *echo.Context, target interface{}) error {
 	// Parse the arguments.
 	if err := (*ctx).Bind(target); err != nil {
-		return err
+		// Parsing has failed.
+		(*ctx).Logger().Error(err)
+		return echo.NewHTTPError(
+			http.StatusBadRequest,
+			"invalid parameter type was passed",
+		)
 	}
 
 	// Validate the arguments.
