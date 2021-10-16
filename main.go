@@ -11,7 +11,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/thepieterdc/gopos/pkg/request"
 
-	//postal "github.com/openvenues/gopostal/parser"
 	"github.com/thepieterdc/gopos/cmd"
 	"github.com/thepieterdc/gopos/src"
 	"go.mongodb.org/mongo-driver/bson"
@@ -121,28 +120,6 @@ func jsonResponse(w http.ResponseWriter, statusCode int, body interface{}) {
 	}
 }
 
-///**
-// * Handles the /format route.
-// */
-//func formatHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-//	// Extract the query string arguments.
-//	queryString := r.URL.Query()
-//	input := queryString.Get("input")
-//	if len(input) == 0 {
-//		invalidArgument(w, "input")
-//		return
-//	}
-//
-//	// Format the address.
-//	response := make(map[string]interface{})
-//	for _, entry := range postal.ParseAddress(input) {
-//		response[entry.Label] = entry.Value
-//	}
-//
-//	// Send the response.
-//	jsonResponse(w, http.StatusOK, response)
-//}
-
 /**
  * Handles the /google/place/:id route.
  */
@@ -227,11 +204,11 @@ func main() {
 
 	// Build the router and register all the routes.
 	//router := httprouter.New()
-	//router.GET("/format", formatHandler)
 	//router.GET("/google/place/:id", googlePlaceHandler)
 
 	// Build the webserver and register all the routes.
 	srv := echo.New()
+	cmd.RegisterAddressRoutes(srv)
 	srv.GET("/timezone", cmd.TimezoneHandler)
 
 	// Register middleware.

@@ -11,6 +11,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/labstack/echo/v4 v4.6.1
 	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
 	go.mongodb.org/mongo-driver v1.7.3
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
