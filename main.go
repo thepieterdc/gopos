@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-playground/validator"
+	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/thepieterdc/gopos/cmd"
@@ -40,6 +41,10 @@ func main() {
 
 	// Register the logging middleware.
 	srv.Use(middleware.Logger())
+
+	// Register the prometheus middleware.
+	prom := prometheus.NewPrometheus("gopos", nil)
+	prom.Use(srv)
 
 	// Register data validator.
 	srv.Validator = &web.Validator{Validator: validator.New()}

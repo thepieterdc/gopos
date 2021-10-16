@@ -149,7 +149,39 @@ GET /google/place/ChIJ37HL3ry3t4kRv3YLbdhpWXE
 }
 ```
 
-### Find the timezone.
+### Health check.
+
+**Example request:**
+
+```http request
+GET /health
+```
+
+**Response:**
+
+```json
+{
+  "status": true
+}
+```
+
+### Prometheus metrics.
+
+**Example request:**
+
+```http request
+GET /metrics
+```
+
+**Response (truncated):**
+
+```text
+gopos_request_duration_seconds_count{code="200",method="GET",url="/timezone"} 5
+gopos_request_duration_seconds_count{code="422",method="GET",url="/timezone"} 1
+...
+```
+
+### Find the timezone of the given location.
 
 **Example request:**
 
