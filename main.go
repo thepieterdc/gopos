@@ -5,9 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/bradfitz/latlong"
+	"github.com/go-playground/validator"
 	"github.com/julienschmidt/httprouter"
-	postal "github.com/openvenues/gopostal/parser"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/thepieterdc/gopos/pkg/request"
+
+	//postal "github.com/openvenues/gopostal/parser"
+	"github.com/thepieterdc/gopos/cmd"
 	"github.com/thepieterdc/gopos/src"
 	"go.mongodb.org/mongo-driver/bson"
 	"net/url"
@@ -17,7 +22,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -40,13 +44,6 @@ type InternalError struct {
 type InvalidArgumentError struct {
 	Error    string `json:"error"`
 	Argument string `json:"argument"`
-}
-
-// TimezoneResponse response of the /timezone call.
-type TimezoneResponse struct {
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-	Timezone  string  `json:"timezone"`
 }
 
 /**
@@ -124,27 +121,27 @@ func jsonResponse(w http.ResponseWriter, statusCode int, body interface{}) {
 	}
 }
 
-/**
- * Handles the /format route.
- */
-func formatHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	// Extract the query string arguments.
-	queryString := r.URL.Query()
-	input := queryString.Get("input")
-	if len(input) == 0 {
-		invalidArgument(w, "input")
-		return
-	}
-
-	// Format the address.
-	response := make(map[string]interface{})
-	for _, entry := range postal.ParseAddress(input) {
-		response[entry.Label] = entry.Value
-	}
-
-	// Send the response.
-	jsonResponse(w, http.StatusOK, response)
-}
+///**
+// * Handles the /format route.
+// */
+//func formatHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+//	// Extract the query string arguments.
+//	queryString := r.URL.Query()
+//	input := queryString.Get("input")
+//	if len(input) == 0 {
+//		invalidArgument(w, "input")
+//		return
+//	}
+//
+//	// Format the address.
+//	response := make(map[string]interface{})
+//	for _, entry := range postal.ParseAddress(input) {
+//		response[entry.Label] = entry.Value
+//	}
+//
+//	// Send the response.
+//	jsonResponse(w, http.StatusOK, response)
+//}
 
 /**
  * Handles the /google/place/:id route.
@@ -214,56 +211,35 @@ func googlePlaceHandler(w http.ResponseWriter, r *http.Request, params httproute
 	}
 }
 
-/**
- * Handles the /timezone route.
- */
-func timezoneHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	// Extract the query string arguments.
-	queryString := r.URL.Query()
-	latitude, err := strconv.ParseFloat(queryString.Get("latitude"), 64)
-	if err != nil {
-		invalidArgument(w, "latitude")
-		return
-	}
-
-	longitude, err := strconv.ParseFloat(queryString.Get("longitude"), 64)
-	if err != nil {
-		invalidArgument(w, "longitude")
-		return
-	}
-
-	// Find the address for this coordinate pair.
-	timezone := latlong.LookupZoneName(latitude, longitude)
-
-	// Send the response.
-	jsonResponse(w, http.StatusOK, TimezoneResponse{
-		Latitude:  latitude,
-		Longitude: longitude,
-		Timezone:  timezone,
-	})
-}
-
 func main() {
-	// Validate the settings.
-	if len(GOOGLE_API_KEY) == 0 {
-		log.Fatal("GOOGLE_API_KEY is missing.")
-	}
-	if len(MONGO_URI) == 0 {
-		log.Fatal("MONGO_URI is missing.")
-	}
-
-	// Connect to the database.
-	log.Println("Connecting to the database...")
-	database = initialiseDatabase()
-	log.Println("Connection OK.")
+	//// Validate the settings.
+	//if len(GOOGLE_API_KEY) == 0 {
+	//	log.Fatal("GOOGLE_API_KEY is missing.")
+	//}
+	//if len(MONGO_URI) == 0 {
+	//	log.Fatal("MONGO_URI is missing.")
+	//}
+	//
+	//// Connect to the database.
+	//log.Println("Connecting to the database...")
+	//database = initialiseDatabase()
+	//log.Println("Connection OK.")
 
 	// Build the router and register all the routes.
-	router := httprouter.New()
-	router.GET("/format", formatHandler)
-	router.GET("/google/place/:id", googlePlaceHandler)
-	router.GET("/timezone", timezoneHandler)
+	//router := httprouter.New()
+	//router.GET("/format", formatHandler)
+	//router.GET("/google/place/:id", googlePlaceHandler)
+
+	// Build the webserver and register all the routes.
+	srv := echo.New()
+	srv.GET("/timezone", cmd.TimezoneHandler)
+
+	// Register middleware.
+	srv.Use(middleware.Logger())
+
+	// Register data validator.
+	srv.Validator = &request.Validator{Validator: validator.New()}
 
 	// Start the server.
-	log.Println("Listening on port 8000.")
-	log.Fatal(http.ListenAndServe("0.0.0.0:8000", router))
+	srv.Logger.Fatal(srv.Start("0.0.0.0:8000"))
 }
