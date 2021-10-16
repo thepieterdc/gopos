@@ -8,7 +8,6 @@ import (
 	"net/http"
 )
 
-// TODO: Add support for passing a country https://github.com/thepieterdc/gopos/issues/14.
 // TODO: Response type as struct instead of raw map.
 
 // ParseHandler handles the /address/parse route.
