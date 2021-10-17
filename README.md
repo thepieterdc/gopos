@@ -8,7 +8,14 @@ Address and place information service in Go.
 
 ---
 
+## Running via docker
+To use this in your own project:
+```shell
+docker run --rm ghcr.io/thepieterdc/gopos:latest
+```
+
 ## Running via docker compose
+Using the `docker-compose.yml` file in this repository:
 ```shell
 docker-compose up --build
 ```
