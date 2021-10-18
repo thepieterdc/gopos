@@ -8,8 +8,6 @@ import (
 	"net/http"
 )
 
-// TODO: Response type as struct instead of raw map.
-
 // ParseHandler handles the /address/parse route.
 func ParseHandler(ctx echo.Context) error {
 	// Parse the arguments.
