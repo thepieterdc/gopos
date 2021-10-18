@@ -58,12 +58,9 @@ GET /address/parse?country=fr&query=Champ%20de%20Mars%2C%205%20Av.%20Anatole%20F
 
 ### Lookup a Google Place ID.
 
-The result of each call can be cached to a database to avoid costs when sending repeated requests.
+The result of each call can be cached to a database to avoid costs when sending repeated requests. 
 
-**Environment variables:**
-The following environment variables are supported:
-- _(Required)_ **GOOGLE_API_KEY:** API key for Google Places.
-- **MONGO_URI:** MongoDB connection string.
+_This route requires [environment variables](CONFIGURATION.md)._
 
 **Example request:**
 

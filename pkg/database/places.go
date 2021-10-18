@@ -14,7 +14,7 @@ const googlePlaceDetailsCollection = "google_place_details"
 // details.
 func (db Database) FindPlaceDetailsById(id string) (*google.GooglePlaceDetails, error) {
 	// Try to fetch the place id from the database.
-	collection := db.Collection(googlePlaceDetailsCollection)
+	collection := db.db.Collection(googlePlaceDetailsCollection)
 	var placeDetails google.GooglePlaceDetails
 	err := collection.FindOne(context.Background(), bson.M{"place_id": id}).Decode(&placeDetails)
 	if err != nil {
@@ -34,7 +34,7 @@ func (db Database) FindPlaceDetailsById(id string) (*google.GooglePlaceDetails, 
 // SavePlaceDetails saves the given place details into the database.
 func (db Database) SavePlaceDetails(details *google.GooglePlaceDetails) error {
 	// Insert the details into the database.
-	collection := db.Collection(googlePlaceDetailsCollection)
+	collection := db.db.Collection(googlePlaceDetailsCollection)
 	_, err := collection.InsertOne(context.Background(), details)
 	return err
 }
