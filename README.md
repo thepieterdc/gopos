@@ -26,9 +26,9 @@ This module requires [libpostal](https://github.com/openvenues/libpostal) for ad
 ## Features
 
 ### Parse an input string into a formatted address.
-If the country of the address is known, it is recommended to pass this along in the request to improve the formatting process (see the second example).
+This route uses `libpostal` to convert an input query into a formatted address. The response format is described [here](https://github.com/openvenues/libpostal#parser-labels).
 
-This route depends on `libpostal`.
+If the country of the address is known, it is recommended to pass this along in the request to improve the formatting process (see the second example).
 
 **Example request:**
 
