@@ -6,28 +6,30 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/thepieterdc/gopos/cmd"
+	"github.com/thepieterdc/gopos/pkg/configuration"
 	"github.com/thepieterdc/gopos/pkg/database"
-	"github.com/thepieterdc/gopos/pkg/environment"
 	"github.com/thepieterdc/gopos/pkg/web"
 	"log"
 )
 
 func main() {
-	// Holder for the database connection.
-	var db *database.Database
+	// Load the settings.
+	config := configuration.Configure()
 
-	// Connect to the database if configured.
-	if len(environment.MongoUri) != 0 {
-		log.Println("Connecting to the database...")
-
-		var err error
-		db, err = database.Connect()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.Println("Connected to the database.")
+	// Attempt to connect to the database.
+	db, err := database.Connect(config)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	// Cleanup the database connection.
+	defer func() {
+		if db != nil {
+			if err := db.Disconnect(); err != nil {
+				log.Fatal(err)
+			}
+		}
+	}()
 
 	// Build the webserver and register all the routes.
 	srv := echo.New()

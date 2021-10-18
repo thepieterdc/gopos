@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/thepieterdc/gopos/pkg/environment"
+	"github.com/thepieterdc/gopos/pkg/configuration"
 	"log"
 	"net/http"
 )
@@ -12,11 +12,14 @@ import (
 // Base Google Place url.
 const apiUrl = "%s/maps/api/place/details/json?key=%s&place_id=%s&fields=address_component,adr_address,business_status,formatted_address,geometry,icon,name,photo,place_id,plus_code,type,url,utc_offset,vicinity"
 
+// Get the configuration.
+var config = configuration.Configure()
+
 // GetPlaceDetailsById sends a lookup request to the Google Maps API with the
 // given place ID.
 func GetPlaceDetailsById(id string) (*GooglePlaceDetails, error) {
 	// Prepare the request for the Google API.
-	requestUrl := fmt.Sprintf(apiUrl, environment.GoogleApiBase(), environment.GoogleApiKey, id)
+	requestUrl := fmt.Sprintf(apiUrl, config.GoogleApiBase(), config.GoogleApiKey(), id)
 	request, err := http.NewRequest("GET", requestUrl, bytes.NewBuffer(nil))
 	if err != nil {
 		return nil, err
