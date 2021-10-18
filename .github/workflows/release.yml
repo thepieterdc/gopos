@@ -8,32 +8,90 @@ on:
         required: true
 
 jobs:
-  publish:
+  image:
     name: Publish image to Docker registry
 
     runs-on: ubuntu-latest
+
+    needs: prepare
 
     permissions:
       packages: write
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.version }}
+
       - name: Login to the container registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
       - name: Download the latest snapshot image for caching
         run: docker pull ghcr.io/thepieterdc/gopos:latest-snapshot
+
       - name: Build the new image
         run: docker build . -t ghcr.io/thepieterdc/gopos:latest -t ghcr.io/thepieterdc/gopos:${{ github.event.inputs.version }} --cache-from ghcr.io/thepieterdc/gopos:latest-snapshot
+
       - name: Push the new image
         run: docker push -a ghcr.io/thepieterdc/gopos
 
-  release:
-    name: Create the release
+  prepare:
+    name: Prepare the release
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Create a release branch
+        run: |
+          git checkout -b release
+          git push -u origin release
+
+      - name: Configure git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Set the release version
+        run: ./scripts/set-version.sh ${{ github.event.inputs.version }}
+
+      - name: Make the release commit
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'version/version.go'
+          branch: release
+          default_author: github_actions
+          message: "Release v${{ github.event.inputs.version }}"
+          signoff: true
+          tag: ${{ github.event.inputs.version }}
+
+  release:
+    name: Publish release
+
+    runs-on: ubuntu-latest
+
+    needs: prepare
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: release
+
+      - name: Configure git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
       - name: Create release
+        id: release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,3 +100,25 @@ jobs:
           prerelease: false
           release_name: ${{ github.event.inputs.version }}
           tag_name: ${{ github.event.inputs.version }}
+
+      - name: Increase the version
+        run: ./scripts/increment-version.sh
+
+      - name: Make the next development commit
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'version/version.go'
+          branch: release
+          default_author: github_actions
+          message: "Prepare the next development cycle"
+          signoff: true
+
+      - name: Open a pull request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_assignee: thepieterdc
+          pr_body: Merge the release commits into the main branch.
+          pr_title: Release v${{ github.event.inputs.version }}
+          source_branch: release
