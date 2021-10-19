@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/thepieterdc/gopos/pkg/configuration"
-	"log"
 	"net/http"
 )
 
@@ -26,7 +25,6 @@ func GetPlaceDetailsById(id string) (*GooglePlaceDetails, error) {
 	}
 
 	// Send the request.
-	log.Printf("Querying Google API for place id: %s.\n", id)
 	client := &http.Client{}
 	response, err := client.Do(request)
 	if err != nil {

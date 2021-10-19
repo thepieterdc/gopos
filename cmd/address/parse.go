@@ -2,11 +2,17 @@ package address
 
 import (
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
+	"github.com/thepieterdc/gopos/pkg/logging"
+	"net/http"
+
 	postal "github.com/openvenues/gopostal/parser"
 	"github.com/thepieterdc/gopos/pkg/address/parse"
 	"github.com/thepieterdc/gopos/pkg/web"
-	"net/http"
 )
+
+// Initialise the logging fields.
+var logger = log.WithFields(logging.RunningStage()).WithFields(logging.AddressComponent())
 
 // ParseHandler handles the /address/parse route.
 func ParseHandler(ctx echo.Context) error {
@@ -26,6 +32,7 @@ func ParseHandler(ctx echo.Context) error {
 	parsed := postal.ParseAddressOptions(input.Query, options)
 
 	// Build the response.
+	logger.WithField("input", input).WithField("output_count", len(parsed)).Info("OK")
 	response := make(map[string]interface{})
 	for _, entry := range parsed {
 		response[entry.Label] = entry.Value

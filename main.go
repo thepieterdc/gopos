@@ -4,29 +4,32 @@ import (
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	log "github.com/sirupsen/logrus"
 	"github.com/thepieterdc/gopos/cmd"
 	"github.com/thepieterdc/gopos/pkg/configuration"
 	"github.com/thepieterdc/gopos/pkg/database"
+	"github.com/thepieterdc/gopos/pkg/logging"
 	"github.com/thepieterdc/gopos/pkg/web"
-	"log"
 )
 
 func main() {
+	// Initialise logging.
+	log.SetFormatter(&log.JSONFormatter{})
+
 	// Load the settings.
 	config := configuration.Configure()
 
 	// Attempt to connect to the database.
 	db, err := database.Connect(config)
 	if err != nil {
-		log.Fatal(err)
+		log.WithFields(logging.BootStage()).WithFields(logging.DatabaseComponent()).Fatal(err)
 	}
 
 	// Cleanup the database connection.
 	defer func() {
 		if db != nil {
 			if err := db.Disconnect(); err != nil {
-				log.Fatal(err)
+				log.WithFields(logging.ShutdownStage()).WithFields(logging.DatabaseComponent()).Fatal(err)
 			}
 		}
 	}()
@@ -40,9 +43,6 @@ func main() {
 
 	// Register the custom context.
 	srv.Use(web.ContextMiddleware(db))
-
-	// Register the logging middleware.
-	srv.Use(middleware.Logger())
 
 	// Register the prometheus middleware.
 	prom := prometheus.NewPrometheus("gopos", nil)

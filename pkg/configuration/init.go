@@ -1,8 +1,9 @@
 package configuration
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
+	"github.com/thepieterdc/gopos/pkg/logging"
 )
 
 var (
@@ -49,7 +50,7 @@ func Configure() *Configuration {
 		var err error
 		config, err = initialise()
 		if err != nil {
-			log.Fatalln(err)
+			log.WithFields(logging.BootStage()).WithFields(logging.VaultComponent()).Fatal(err)
 		}
 	}
 
