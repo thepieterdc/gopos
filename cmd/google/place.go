@@ -10,7 +10,7 @@ import (
 )
 
 // Initialise the logger.
-var baseLogger = log.WithFields(logging.RunningStage()).WithFields(logging.GoogleComponent())
+var logger = log.WithFields(logging.RunningStage()).WithFields(logging.GoogleComponent())
 
 // PlaceHandler handles the /google/place route.
 func PlaceHandler(c echo.Context) error {
@@ -24,9 +24,6 @@ func PlaceHandler(c echo.Context) error {
 		return ctx.NoContent(http.StatusBadRequest)
 	}
 
-	// Augment the logger.
-	logger := baseLogger.WithField("placeId", id)
-
 	// Attempt to get the place details from the database cache.
 	if ctx.DB != nil {
 		placeDetails, err := ctx.DB.FindPlaceDetailsById(id)
@@ -36,7 +33,7 @@ func PlaceHandler(c echo.Context) error {
 
 		// If the place details were found, return them to the client.
 		if placeDetails != nil {
-			logger.WithField("source", "db").Info("Found place details in cache.")
+			logger.WithField("source", "db").Infof("Fetched place details for %s from cache.", id)
 			return ctx.JSON(http.StatusOK, placeDetails)
 		}
 	}
@@ -47,7 +44,7 @@ func PlaceHandler(c echo.Context) error {
 		return err
 	}
 
-	logger.WithField("source", "api").Info("Fetched place details from Google API.")
+	logger.WithField("source", "api").Infof("Fetched place details for %s from Google API.", id)
 
 	// Store the place details in the database.
 	if ctx.DB != nil {

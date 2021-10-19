@@ -32,7 +32,7 @@ func ParseHandler(ctx echo.Context) error {
 	parsed := postal.ParseAddressOptions(input.Query, options)
 
 	// Build the response.
-	logger.WithField("input", input).WithField("output_count", len(parsed)).Info("OK")
+	logger.Infof('Parsed input "%s" into %d fields.', input, len(parsed))
 	response := make(map[string]interface{})
 	for _, entry := range parsed {
 		response[entry.Label] = entry.Value
