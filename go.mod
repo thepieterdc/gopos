@@ -12,6 +12,7 @@ require (
 	github.com/labstack/echo/v4 v4.6.1
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
+	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/viper v1.9.0
 	go.mongodb.org/mongo-driver v1.7.3
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect

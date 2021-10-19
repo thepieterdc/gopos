@@ -3,22 +3,27 @@ package configuration
 import (
 	"fmt"
 	vault "github.com/hashicorp/vault/api"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
+	"github.com/thepieterdc/gopos/pkg/logging"
 	"strings"
 )
 
 // loadVaultSecrets attempts to load secrets from Vault.
 func loadVaultSecrets(v *viper.Viper) error {
+	// Initialise the logging fields.
+	logger := log.WithFields(logging.BootStage()).WithFields(logging.VaultComponent())
+
 	// Validate whether Vault is configured.
 	vaultAddr := v.GetString(varVaultAddr)
 	if len(vaultAddr) == 0 {
 		// Do nothing.
+		logger.Info("Not configured. Skipping.")
 		return nil
 	}
 
 	// Attempt to connect to Vault.
-	log.Println("[Vault] Attempting to load secrets...")
+	logger.Info("Attempting to load secrets.")
 
 	// Build the configuration.
 	config := vault.DefaultConfig()
@@ -27,7 +32,7 @@ func loadVaultSecrets(v *viper.Viper) error {
 	// Build a client.
 	client, err := vault.NewClient(config)
 	if err != nil {
-		return fmt.Errorf("[Vault] could not initialise Vault: %w", err)
+		return fmt.Errorf("could not initialise: %w", err)
 	}
 
 	// Perform authentication.
@@ -36,12 +41,11 @@ func loadVaultSecrets(v *viper.Viper) error {
 	// Load the secret.
 	secret, err := client.Logical().Read(v.GetString(varVaultSecretsPath))
 	if err != nil {
-		return fmt.Errorf("[Vault] could not read secrets: %w", err)
+		return fmt.Errorf("could not read secrets: %w", err)
 	} else if secret == nil {
-		log.Println("[Vault] Secret engine was not found.")
-		return nil
+		return fmt.Errorf("secret engine was not found")
 	} else if secret.Data == nil {
-		log.Println("[Vault] No secrets were found at the given path.")
+		logger.Warn("No secrets were found at the given path.")
 		return nil
 	}
 
@@ -49,7 +53,7 @@ func loadVaultSecrets(v *viper.Viper) error {
 	dataRaw := secret.Data["data"]
 	data, ok := dataRaw.(map[string]interface{})
 	if !ok {
-		return fmt.Errorf("[Vault] could not load data: %T %#v", dataRaw, dataRaw)
+		return fmt.Errorf("could not load data: %T %#v", dataRaw, dataRaw)
 	}
 
 	// Override the configured variables.
@@ -64,7 +68,7 @@ func loadVaultSecrets(v *viper.Viper) error {
 		}
 	}
 
-	log.Printf("[Vault] Loaded %d secrets.", loaded)
+	logger.Infof("Loaded %d secrets.", loaded)
 
 	return nil
 }

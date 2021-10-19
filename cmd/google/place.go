@@ -2,10 +2,15 @@ package google
 
 import (
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 	"github.com/thepieterdc/gopos/pkg/google"
+	"github.com/thepieterdc/gopos/pkg/logging"
 	"github.com/thepieterdc/gopos/pkg/web"
 	"net/http"
 )
+
+// Initialise the logger.
+var baseLogger = log.WithFields(logging.RunningStage()).WithFields(logging.GoogleComponent())
 
 // PlaceHandler handles the /google/place route.
 func PlaceHandler(c echo.Context) error {
@@ -19,6 +24,9 @@ func PlaceHandler(c echo.Context) error {
 		return ctx.NoContent(http.StatusBadRequest)
 	}
 
+	// Augment the logger.
+	logger := baseLogger.WithField("placeId", id)
+
 	// Attempt to get the place details from the database cache.
 	if ctx.DB != nil {
 		placeDetails, err := ctx.DB.FindPlaceDetailsById(id)
@@ -28,6 +36,7 @@ func PlaceHandler(c echo.Context) error {
 
 		// If the place details were found, return them to the client.
 		if placeDetails != nil {
+			logger.WithField("source", "db").Info("Found place details in cache.")
 			return ctx.JSON(http.StatusOK, placeDetails)
 		}
 	}
@@ -37,6 +46,8 @@ func PlaceHandler(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	logger.WithField("source", "api").Info("Fetched place details from Google API.")
 
 	// Store the place details in the database.
 	if ctx.DB != nil {
