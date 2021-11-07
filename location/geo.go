@@ -1,13 +1,6 @@
-package parse
+package location
 
-// RequestQuery query parameters of the /address/parse route.
-type RequestQuery struct {
-	Country string `query:"country"`
-	Query   string `query:"query" validate:"required"`
-}
-
-// Response result of the /address/parse route.
-type Response struct {
+type Address struct {
 	Category      string `json:"category"`
 	City          string `json:"city"`
 	CityDistrict  string `json:"city_district"`
@@ -28,4 +21,26 @@ type Response struct {
 	Suburb        string `json:"suburb"`
 	Unit          string `json:"unit"`
 	WorldRegion   string `json:"world_region"`
+}
+
+type Coordinates struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+type Location struct {
+	RawAddress     string `json:"raw_address"`
+	DisplayAddress string `json:"display_address"`
+	Address
+	Coordinates
+	Language string `json:"language"`
+	GeoHash  string `json:"geo_hash"`
+	Timezone string `json:"timezone"`
+	PlaceID  string `json:"place_id"`
+	Source   string `json:"source"`
+}
+
+type LocationFromSource interface {
+	Parse(interface{}) (Location, error)
+	Confidence() (float32, error)
 }
