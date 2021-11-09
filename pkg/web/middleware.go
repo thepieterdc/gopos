@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/thepieterdc/gopos/internal/pkg/version"
 	"github.com/thepieterdc/gopos/pkg/database"
@@ -24,6 +25,12 @@ func ContextMiddleware(db *database.Database) echo.MiddlewareFunc {
 			return next(cc)
 		}
 	}
+}
+
+// PrometheusMiddleware registers the Prometheus middleware on the server.
+func PrometheusMiddleware(srv *echo.Echo) {
+	prom := prometheus.NewPrometheus("gopos", nil)
+	prom.Use(srv)
 }
 
 // VersionHeaderMiddleware adds the current Gopos version to every HTTP

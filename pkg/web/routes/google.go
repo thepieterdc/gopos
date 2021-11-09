@@ -1,18 +1,18 @@
-package cmd
+package routes
 
 import (
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
-	"github.com/thepieterdc/gopos/cmd/google"
 	"github.com/thepieterdc/gopos/pkg/configuration"
 	"github.com/thepieterdc/gopos/pkg/logging"
+	"github.com/thepieterdc/gopos/pkg/web/routes/google"
 	"net/http"
 )
 
 // Get the configuration.
 var config = configuration.Configure()
 
-func RegisterGoogleRoutes(srv *echo.Echo) {
+func registerGoogleRoutes(srv *echo.Echo) {
 	// Build the group.
 	g := srv.Group("/google")
 

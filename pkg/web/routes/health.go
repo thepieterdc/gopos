@@ -1,4 +1,4 @@
-package cmd
+package routes
 
 import (
 	"github.com/labstack/echo/v4"

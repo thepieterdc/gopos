@@ -15,7 +15,7 @@ func loadVaultSecrets(v *viper.Viper) error {
 	logger := log.WithFields(logging.BootStage()).WithFields(logging.VaultComponent())
 
 	// Validate whether Vault is configured.
-	vaultAddr := v.GetString(varVaultAddr)
+	vaultAddr := v.GetString(envVaultAddr)
 	if len(vaultAddr) == 0 {
 		// Do nothing.
 		logger.Info("Not configured. Skipping.")
@@ -36,10 +36,10 @@ func loadVaultSecrets(v *viper.Viper) error {
 	}
 
 	// Perform authentication.
-	client.SetToken(v.GetString(varVaultToken))
+	client.SetToken(v.GetString(envVaultToken))
 
 	// Load the secret.
-	secret, err := client.Logical().Read(v.GetString(varVaultSecretsPath))
+	secret, err := client.Logical().Read(v.GetString(envVaultSecretsPath))
 	if err != nil {
 		return fmt.Errorf("could not read secrets: %w", err)
 	} else if secret == nil {

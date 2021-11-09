@@ -1,11 +1,11 @@
-package cmd
+package routes
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/thepieterdc/gopos/cmd/address"
+	"github.com/thepieterdc/gopos/pkg/web/routes/address"
 )
 
-func RegisterAddressRoutes(srv *echo.Echo) {
+func registerAddressRoutes(srv *echo.Echo) {
 	// Build the group.
 	g := srv.Group("/address")
 
