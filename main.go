@@ -41,8 +41,9 @@ func main() {
 	cmd.RegisterGoogleRoutes(srv)
 	srv.GET("/timezone", cmd.TimezoneHandler)
 
-	// Register the custom context.
+	// Register custom middleware.
 	srv.Use(web.ContextMiddleware(db))
+	srv.Use(web.VersionHeaderMiddleware)
 
 	// Register the prometheus middleware.
 	prom := prometheus.NewPrometheus("gopos", nil)

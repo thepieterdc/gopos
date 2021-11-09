@@ -2,8 +2,12 @@ package web
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/thepieterdc/gopos/internal/pkg/version"
 	"github.com/thepieterdc/gopos/pkg/database"
 )
+
+// HeaderVersion HTTP Header that includes the current version.
+const HeaderVersion = "X-Gopos-Version"
 
 // GoposContext custom context that exposes the database instance to routes.
 type GoposContext struct {
@@ -19,5 +23,14 @@ func ContextMiddleware(db *database.Database) echo.MiddlewareFunc {
 			cc := &GoposContext{DB: db, Context: ctx}
 			return next(cc)
 		}
+	}
+}
+
+// VersionHeaderMiddleware adds the current Gopos version to every HTTP
+// response.
+func VersionHeaderMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(ctx echo.Context) error {
+		ctx.Response().Header().Set(HeaderVersion, version.VERSION)
+		return next(ctx)
 	}
 }
