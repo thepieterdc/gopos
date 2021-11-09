@@ -8,12 +8,12 @@ usage() {
 }
 
 # Check if the version file exists.
-if [ ! -f version/version.go ]; then
+if [ ! -f internal/pkg/version/version.go ]; then
     usage
 fi
 
 # Get the current version.
-version=$(cat version/version.go | grep 'VERSION = ' | grep -o '".*"$' | tr -d '"')
+version=$(cat internal/pkg/version/version.go | grep 'VERSION = ' | grep -o '".*"$' | tr -d '"')
 
 # Strip the optional -SNAPSHOT part.
 if echo "$version" | grep -q "\-SNAPSHOT"; then

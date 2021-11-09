@@ -13,9 +13,9 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Check if the version file exists.
-if [ ! -f version/version.go ]; then
+if [ ! -f internal/pkg/version/version.go ]; then
     usage
 fi
 
 # Replace the version.
-sed -i "s/VERSION = .*$/VERSION = \"$1\"/g" "version/version.go"
+sed -i "s/VERSION = .*$/VERSION = \"$1\"/g" "internal/pkg/version/version.go"

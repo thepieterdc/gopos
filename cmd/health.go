@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/thepieterdc/gopos/internal/pkg/version"
 	"github.com/thepieterdc/gopos/pkg/health"
-	"github.com/thepieterdc/gopos/version"
 	"net/http"
 )
 
