@@ -6,13 +6,13 @@ import (
 	"github.com/thepieterdc/gopos/pkg/logging"
 )
 
-var (
-	varGoogleApiBase    = "GOOGLE_API_BASE"
-	varGoogleApiKey     = "GOOGLE_API_KEY"
-	varMongoUri         = "MONGO_URI"
-	varVaultAddr        = "VAULT_ADDR"
-	varVaultSecretsPath = "VAULT_SECRETS_PATH"
-	varVaultToken       = "VAULT_TOKEN"
+const (
+	envGoogleApiBase    = "GOOGLE_API_BASE"
+	envGoogleApiKey     = "GOOGLE_API_KEY"
+	envongoUri          = "MONGO_URI"
+	envVaultAddr        = "VAULT_ADDR"
+	envVaultSecretsPath = "VAULT_SECRETS_PATH"
+	envVaultToken       = "VAULT_TOKEN"
 )
 
 // config holds the configuration.
@@ -24,12 +24,12 @@ func initialise() (*Configuration, error) {
 	v.AutomaticEnv()
 
 	// Configure the supported environment variables.
-	v.SetDefault(varGoogleApiBase, "https://maps.googleapis.com")
-	v.SetDefault(varGoogleApiKey, "")
-	v.SetDefault(varMongoUri, "")
-	v.SetDefault(varVaultAddr, "")
-	v.SetDefault(varVaultSecretsPath, "")
-	v.SetDefault(varVaultToken, "")
+	v.SetDefault(envGoogleApiBase, "https://maps.googleapis.com")
+	v.SetDefault(envGoogleApiKey, "")
+	v.SetDefault(envongoUri, "")
+	v.SetDefault(envVaultAddr, "")
+	v.SetDefault(envVaultSecretsPath, "")
+	v.SetDefault(envVaultToken, "")
 
 	// Load environment variables from Vault.
 	err := loadVaultSecrets(v)
