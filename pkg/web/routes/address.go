@@ -10,5 +10,6 @@ func registerAddressRoutes(srv *echo.Echo) {
 	g := srv.Group("/address")
 
 	// Register the routes.
-	g.GET("/parse", address.ParseHandler)
+	g.GET("/normalise", address.NormaliseHandler)
+	g.GET("/resolve", address.ResolveHandler)
 }
