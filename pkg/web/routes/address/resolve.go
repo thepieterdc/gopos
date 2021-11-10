@@ -2,8 +2,6 @@ package address
 
 import (
 	"github.com/labstack/echo/v4"
-	log "github.com/sirupsen/logrus"
-	"github.com/thepieterdc/gopos/pkg/logging"
 	"net/http"
 
 	postal "github.com/openvenues/gopostal/parser"
@@ -11,11 +9,8 @@ import (
 	"github.com/thepieterdc/gopos/pkg/web"
 )
 
-// Initialise the logging fields.
-var logger = log.WithFields(logging.RunningStage()).WithFields(logging.AddressComponent())
-
-// ParseHandler handles the /address/parse route.
-func ParseHandler(ctx echo.Context) error {
+// ResolveHandler handles the /address/parse route.
+func ResolveHandler(ctx echo.Context) error {
 	// Parse the arguments.
 	input := new(parse.RequestQuery)
 	if err := web.ParseAndValidate(&ctx, input); err != nil {
