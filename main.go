@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "github.com/thepieterdc/gopos/cmd"
 
+func main() {
+	cmd.Web()
 }

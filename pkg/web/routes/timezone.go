@@ -32,7 +32,7 @@ func TimezoneHandler(ctx echo.Context) error {
 	tz := latlong.LookupZoneName(input.Latitude, input.Longitude)
 
 	// Build the response.
-	response := &timezoneResponse{
+	response := timezoneResponse{
 		Latitude:  input.Latitude,
 		Longitude: input.Longitude,
 		Timezone:  tz,

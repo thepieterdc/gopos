@@ -7,15 +7,15 @@ type GoogleAddressComponent struct {
 	Types     []string `bson:"types" json:"types"`
 }
 
+// GoogleGeometry geometry of a Google Place.
+type GoogleGeometry struct {
+	Location GoogleLocation `bson:"location" json:"location"`
+}
+
 // GoogleLocation location of a Google Place.
 type GoogleLocation struct {
 	Lat float64 `bson:"lat" json:"lat"`
 	Lng float64 `bson:"lng" json:"lng"`
-}
-
-// GoogleGeometry geometry of a Google Place.
-type GoogleGeometry struct {
-	Location GoogleLocation `bson:"location" json:"location"`
 }
 
 // GooglePlusCode a plus code of a Google Place.

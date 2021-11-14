@@ -2,7 +2,7 @@ package database
 
 import (
 	"context"
-	"github.com/thepieterdc/gopos/pkg/google"
+	"github.com/thepieterdc/gopos/internal/pkg/google"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
