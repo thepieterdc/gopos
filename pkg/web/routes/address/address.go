@@ -2,7 +2,7 @@ package address
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/thepieterdc/gopos/pkg/logging"
+	"github.com/thepieterdc/gopos/internal/pkg/logging"
 )
 
 // Initialise the logging fields.

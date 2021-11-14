@@ -4,9 +4,9 @@ import (
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
-	"github.com/thepieterdc/gopos/pkg/configuration"
+	"github.com/thepieterdc/gopos/internal/pkg/configuration"
+	"github.com/thepieterdc/gopos/internal/pkg/logging"
 	"github.com/thepieterdc/gopos/pkg/database"
-	"github.com/thepieterdc/gopos/pkg/logging"
 	"github.com/thepieterdc/gopos/pkg/web"
 	"github.com/thepieterdc/gopos/pkg/web/routes"
 )

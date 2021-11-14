@@ -23,10 +23,6 @@ type Address struct {
 	WorldRegion   string `json:"world_region"`
 }
 
-type Coordinates struct {
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-}
 
 type Location struct {
 	RawAddress     string `json:"raw_address"`

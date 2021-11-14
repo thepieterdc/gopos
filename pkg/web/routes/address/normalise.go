@@ -13,6 +13,7 @@ type requestQuery struct {
 	Query string `query:"query" validate:"required"`
 }
 
+// response result of the /address/normalise route.
 type response struct {
 	Normalised []string `json:"normalised"`
 	Query      string   `json:"query"`

@@ -5,7 +5,7 @@ import (
 	vault "github.com/hashicorp/vault/api"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"github.com/thepieterdc/gopos/pkg/logging"
+	"github.com/thepieterdc/gopos/internal/pkg/logging"
 	"strings"
 )
 
