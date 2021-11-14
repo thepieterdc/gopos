@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/thepieterdc/gopos/pkg/configuration"
+	"github.com/thepieterdc/gopos/internal/pkg/configuration"
 	"net/http"
 )
 

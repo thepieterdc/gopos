@@ -3,8 +3,8 @@ package google
 import (
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
+	"github.com/thepieterdc/gopos/internal/pkg/logging"
 	"github.com/thepieterdc/gopos/pkg/google"
-	"github.com/thepieterdc/gopos/pkg/logging"
 	"github.com/thepieterdc/gopos/pkg/web"
 	"net/http"
 )
