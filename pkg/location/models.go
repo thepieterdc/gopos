@@ -1,4 +1,4 @@
-package models
+package location
 
 // AddressInfo contains structured fields for an address. All fields should be
 // strings.
