@@ -13,7 +13,7 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
 	github.com/sirupsen/logrus v1.8.1
-	github.com/spf13/viper v1.10.0
+	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.0
 	go.mongodb.org/mongo-driver v1.8.1
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
