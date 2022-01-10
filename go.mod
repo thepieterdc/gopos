@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/vault/api v1.3.0
 	github.com/jonas-p/go-shp v0.1.1 // indirect
 	github.com/labstack/echo-contrib v0.11.0
-	github.com/labstack/echo/v4 v4.6.1
+	github.com/labstack/echo/v4 v4.6.2
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
 	github.com/sirupsen/logrus v1.8.1
