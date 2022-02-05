@@ -60,7 +60,7 @@ jobs:
         run: ./scripts/set-version.sh ${{ github.event.inputs.version }}
 
       - name: Make the release commit
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v8.0.1
         with:
           add: 'version/version.go'
           branch: release
@@ -105,7 +105,7 @@ jobs:
         run: ./scripts/increment-version.sh
 
       - name: Make the next development commit
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v8.0.1
         with:
           add: 'version/version.go'
           branch: release
