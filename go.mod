@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/bradfitz/latlong v0.0.0-20170410180902-f3db6d0dff40
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/hashicorp/vault/api v1.3.1
@@ -13,7 +14,7 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
 	github.com/sirupsen/logrus v1.8.1
-	github.com/spf13/viper v1.10.1
+	github.com/spf13/viper v1.11.0
 	github.com/stretchr/testify v1.7.1
 	go.mongodb.org/mongo-driver v1.9.0
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
