@@ -6,6 +6,7 @@ updates:
       - "thepieterdc"
     schedule:
       interval: monthly
+
   - package-ecosystem: gomod
     directory: "/"
     reviewers:
