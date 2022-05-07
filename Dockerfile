@@ -1,5 +1,5 @@
 # Base image.
-FROM golang:latest
+FROM golang:1.18.1
 
 # Install dependencies.
 RUN apt-get update && apt-get install -y autoconf curl libtool pkg-config
