@@ -11,7 +11,7 @@ require (
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.12.0
-	github.com/stretchr/testify v1.7.3
+	github.com/stretchr/testify v1.8.0
 	go.mongodb.org/mongo-driver v1.9.1
 )
 
