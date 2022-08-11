@@ -7,7 +7,7 @@ require (
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/hashicorp/vault/api v1.7.2
 	github.com/labstack/echo-contrib v0.13.0
-	github.com/labstack/echo/v4 v4.7.2
+	github.com/labstack/echo/v4 v4.8.0
 	github.com/openvenues/gopostal v0.0.0-20171226154602-e0184512a45d
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.12.0
