@@ -24,7 +24,16 @@ type resolveResponse struct {
 	Resolver       string               `json:"resolver"`
 }
 
-// ResolveHandler handles the /address/parse route.
+// ResolveHandler handles the /address/resolve route.
+//
+// @Summary Resolve an address query into structured address information.
+// @Param query query string true "Address to resolve."
+// @Param country query string false "Country of the address, improves accuracy if known."
+// @Param resolver query string false "Resolver to use." Enums(libpostal, google) default(libpostal)
+// @Produce json
+// @Success 200 {object} resolveResponse
+// @Failure 400 "Missing or invalid query parameters."
+// @Router /address/resolve [get]
 func ResolveHandler(ctx echo.Context) error {
 	// Parse the arguments.
 	input := new(resolveRequestQuery)

@@ -21,6 +21,14 @@ type timezoneResponse struct {
 }
 
 // TimezoneHandler handles the /timezone route.
+//
+// @Summary Look up the timezone of a coordinate pair.
+// @Param latitude query number true "Latitude."
+// @Param longitude query number true "Longitude."
+// @Produce json
+// @Success 200 {object} timezoneResponse
+// @Failure 400 "Missing or invalid query parameters."
+// @Router /timezone [get]
 func TimezoneHandler(ctx echo.Context) error {
 	// Parse the arguments.
 	input := new(timezoneRequestQuery)

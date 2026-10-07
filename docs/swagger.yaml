@@ -1,0 +1,224 @@
+basePath: /
+definitions:
+  address.normaliseResponse:
+    properties:
+      normalised:
+        items:
+          type: string
+        type: array
+      query:
+        type: string
+    type: object
+  address.resolveResponse:
+    properties:
+      address_info:
+        $ref: '#/definitions/location.AddressInfo'
+      display_address:
+        type: string
+      query:
+        type: string
+      resolver:
+        type: string
+    type: object
+  google.GoogleAddressComponent:
+    properties:
+      long_name:
+        type: string
+      short_name:
+        type: string
+      types:
+        items:
+          type: string
+        type: array
+    type: object
+  google.GoogleGeometry:
+    properties:
+      location:
+        $ref: '#/definitions/google.GoogleLocation'
+    type: object
+  google.GoogleLocation:
+    properties:
+      lat:
+        type: number
+      lng:
+        type: number
+    type: object
+  google.GooglePlaceDetails:
+    properties:
+      address_components:
+        items:
+          $ref: '#/definitions/google.GoogleAddressComponent'
+        type: array
+      business_status:
+        type: string
+      formatted_address:
+        type: string
+      geometry:
+        $ref: '#/definitions/google.GoogleGeometry'
+      icon:
+        type: string
+      name:
+        type: string
+      place_id:
+        type: string
+      plus_code:
+        $ref: '#/definitions/google.GooglePlusCode'
+      types:
+        items:
+          type: string
+        type: array
+      url:
+        type: string
+      utc_offset:
+        type: integer
+      vicinity:
+        type: string
+    type: object
+  google.GooglePlusCode:
+    properties:
+      compound_code:
+        type: string
+      global_code:
+        type: string
+    type: object
+  location.AddressInfo:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      postal_code:
+        type: string
+      state_or_province:
+        type: string
+      street:
+        type: string
+      street_number:
+        type: string
+      unit:
+        type: string
+    type: object
+  routes.healthResponse:
+    properties:
+      status:
+        type: boolean
+      version:
+        type: string
+    type: object
+  routes.timezoneResponse:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+      timezone:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Address and place information service.
+  title: Gopos
+paths:
+  /address/normalise:
+    get:
+      parameters:
+      - description: Address to normalise.
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/address.normaliseResponse'
+        "400":
+          description: Missing or invalid query parameters.
+      summary: Normalise an address into its possible expansions.
+  /address/resolve:
+    get:
+      parameters:
+      - description: Address to resolve.
+        in: query
+        name: query
+        required: true
+        type: string
+      - description: Country of the address, improves accuracy if known.
+        in: query
+        name: country
+        type: string
+      - default: libpostal
+        description: Resolver to use.
+        enum:
+        - libpostal
+        - google
+        in: query
+        name: resolver
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/address.resolveResponse'
+        "400":
+          description: Missing or invalid query parameters.
+      summary: Resolve an address query into structured address information.
+  /google/place/{id}:
+    get:
+      description: Returns 503 when no Google Maps API key is configured.
+      parameters:
+      - description: Google Place ID.
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/google.GooglePlaceDetails'
+        "400":
+          description: Missing place ID.
+        "503":
+          description: Google Maps API key is not configured.
+      summary: Get the details of a Google Place ID.
+  /health:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.healthResponse'
+      summary: Health check.
+  /timezone:
+    get:
+      parameters:
+      - description: Latitude.
+        in: query
+        name: latitude
+        required: true
+        type: number
+      - description: Longitude.
+        in: query
+        name: longitude
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.timezoneResponse'
+        "400":
+          description: Missing or invalid query parameters.
+      summary: Look up the timezone of a coordinate pair.
+swagger: "2.0"
