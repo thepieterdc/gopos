@@ -19,7 +19,7 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.version }}
 
@@ -44,7 +44,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Create a release branch
         run: |
@@ -60,10 +60,9 @@ jobs:
         run: ./scripts/set-version.sh ${{ github.event.inputs.version }}
 
       - name: Make the release commit
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v11
         with:
           add: 'version/version.go'
-          branch: release
           commit: '--signoff'
           default_author: github_actions
           message: "Release v${{ github.event.inputs.version }}"
@@ -81,7 +80,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           ref: release
 
@@ -105,10 +104,9 @@ jobs:
         run: ./scripts/increment-version.sh
 
       - name: Make the next development commit
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v11
         with:
           add: 'version/version.go'
-          branch: release
           commit: '--signoff'
           default_author: github_actions
           message: "Prepare the next development cycle"
