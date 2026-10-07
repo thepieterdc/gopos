@@ -171,10 +171,12 @@ GET /health
 
 ### Prometheus metrics.
 
+Metrics are served by a separate webserver on port `9200`, not on the main port.
+
 **Example request:**
 
 ```http request
-GET /metrics
+GET :9200/metrics
 ```
 
 **Response (truncated):**

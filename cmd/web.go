@@ -41,10 +41,19 @@ func Web() {
 	// Register the middlewares.
 	srv.Use(web.ContextMiddleware(db))
 	srv.Use(web.VersionHeaderMiddleware)
-	web.PrometheusMiddleware(srv)
+
+	// Build the metrics webserver, exposed on a separate port.
+	metrics := echo.New()
+	metrics.HideBanner = true
+	web.PrometheusMiddleware(srv, metrics)
 
 	// Register data validator.
 	srv.Validator = &web.Validator{Validator: validator.New()}
+
+	// Start the metrics server.
+	go func() {
+		metrics.Logger.Fatal(metrics.Start("0.0.0.0:9200"))
+	}()
 
 	// Start the server.
 	srv.Logger.Fatal(srv.Start("0.0.0.0:8000"))

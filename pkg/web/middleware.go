@@ -27,10 +27,12 @@ func ContextMiddleware(db *database.Database) echo.MiddlewareFunc {
 	}
 }
 
-// PrometheusMiddleware registers the Prometheus middleware on the server.
-func PrometheusMiddleware(srv *echo.Echo) {
+// PrometheusMiddleware registers the Prometheus middleware on the server and
+// exposes the collected metrics on the given metrics server instead.
+func PrometheusMiddleware(srv *echo.Echo, metrics *echo.Echo) {
 	prom := prometheus.NewPrometheus("gopos", nil)
-	prom.Use(srv)
+	srv.Use(prom.HandlerFunc)
+	prom.SetMetricsPath(metrics)
 }
 
 // VersionHeaderMiddleware adds the current Gopos version to every HTTP
