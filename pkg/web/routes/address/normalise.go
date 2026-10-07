@@ -20,6 +20,13 @@ type normaliseResponse struct {
 }
 
 // NormaliseHandler handles the /address/normalise route.
+//
+// @Summary Normalise an address into its possible expansions.
+// @Param query query string true "Address to normalise."
+// @Produce json
+// @Success 200 {object} normaliseResponse
+// @Failure 400 "Missing or invalid query parameters."
+// @Router /address/normalise [get]
 func NormaliseHandler(ctx echo.Context) error {
 	// Parse the arguments.
 	input := new(normaliseRequestQuery)

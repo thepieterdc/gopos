@@ -13,6 +13,15 @@ import (
 var logger = log.WithFields(logging.RunningStage()).WithFields(logging.GoogleComponent())
 
 // PlaceHandler handles the /google/place route.
+//
+// @Summary Get the details of a Google Place ID.
+// @Description Returns 503 when no Google Maps API key is configured.
+// @Param id path string true "Google Place ID."
+// @Produce json
+// @Success 200 {object} google.GooglePlaceDetails
+// @Failure 400 "Missing place ID."
+// @Failure 503 "Google Maps API key is not configured."
+// @Router /google/place/{id} [get]
 func PlaceHandler(c echo.Context) error {
 	// Cast the context.
 	ctx := c.(*web.GoposContext)

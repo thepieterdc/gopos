@@ -23,6 +23,12 @@ docker-compose up --build
 ## Dependencies
 This module requires [libpostal](https://github.com/openvenues/libpostal) for address resolving.
 
+## API documentation
+Interactive API documentation (OpenAPI/Swagger UI) is served at `/docs`; the raw specification is available at `/docs/openapi.yaml` (source: `pkg/web/routes/docs/openapi.yaml`).
+
+## API documentation
+Interactive API documentation (Swagger UI) is served at `/docs/index.html`. It is generated from the handler annotations by [swag](https://github.com/swaggo/swag) in a [pre-commit](https://pre-commit.com) hook (`pre-commit install`), or manually via `swag init --parseDependency --parseInternal`.
+
 ## Features
 
 ### Parse an input string into a formatted address.

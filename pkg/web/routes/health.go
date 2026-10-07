@@ -13,6 +13,11 @@ type healthResponse struct {
 }
 
 // HealthHandler handles the /health route.
+//
+// @Summary Health check.
+// @Produce json
+// @Success 200 {object} healthResponse
+// @Router /health [get]
 func HealthHandler(ctx echo.Context) error {
 	response := &healthResponse{
 		Status:  true,
